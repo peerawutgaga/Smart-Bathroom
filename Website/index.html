@@ -1,0 +1,37 @@
+<script src="https://cdn.netpie.io/microgear.js"></script>
+<script>
+  const APPID     = "y3s1LabSynFinalProject";
+  const APPKEY    = "9Pq5vtdxkONdWSO";
+  const APPSECRET = "uXJFOovraOxigX6oXJJIdwssA";
+
+	var microgear = Microgear.create({
+		key: APPKEY,
+		secret: APPSECRET,
+		alias : "index1"         /*  optional used as gear name for communication with .chat  */
+	});
+
+	microgear.on('message',function(topic,msg) {
+		document.getElementById("data").innerHTML = msg;
+	});
+
+	microgear.on('connected', function() {
+		document.getElementById("data").innerHTML = "Now I am connected with netpie...";
+		setInterval(function() {
+			microgear.chat("index2","Hello from index1 at "+Date.now());
+		},5000);
+	});
+
+	microgear.on('present', function(event) {
+		console.log(event);
+		console.log("New friend found: "+event.gearkey);
+		console.log("Friend lost: "+event.gearkey);
+	});
+
+	microgear.on('absent', function(event) {
+		console.log(event);
+	});
+
+	microgear.connect(APPID);
+</script>
+
+<div id="data">_____</div>
