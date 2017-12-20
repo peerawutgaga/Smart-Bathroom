@@ -21,30 +21,27 @@ MicroGear microgear(client);
 
 void onMsghandler(char *topic, uint8_t* msg, unsigned int msglen) 
 {
-  Serial.print("Incoming message --> ");
-  Serial.print(topic);
-  Serial.print(" : ");
+
   char strState[msglen];
   for (int i = 0; i < msglen; i++) 
   {
     strState[i] = (char)msg[i];
     Serial.print((char)msg[i]);
   }
-  Serial.println();
 
   String stateStr = String(strState).substring(0, msglen);
-
-   mySerial.println(stateStr);
-   
+  
   if(stateStr == "ON") 
   {
     digitalWrite(ledPin, LOW);
     microgear.chat(TargetWeb, "ON");
+    mySerial.write('n');
   } 
   else if (stateStr == "OFF") 
   {
     digitalWrite(ledPin, HIGH);
     microgear.chat(TargetWeb, "OFF");
+    mySerial.write('f');
   }
 }
 
@@ -56,7 +53,7 @@ void onConnected(char *attribute, uint8_t* msg, unsigned int msglen)
 
 uint8_t dataIn;
 uint8_t dataOut;
-char data;
+String data;
 char dataa;
 void setup() 
 {
@@ -88,11 +85,20 @@ void setup()
  void loop() 
 {
   //input from UART
+//  digitalWrite(ledPin,HIGH);
     if(mySerial.available()>0){
-      dataa = mySerial.read();
-      Serial.println(dataa); 
-      microgear.chat(TargetWeb, dataa);
+      data = mySerial.readStringUntil('\n');
+     // data = mySerial.read();
+   //   data += dataa;
+      Serial.println(data);
+     /* if( dataa =='\n' ){
+        Serial.println(data); 
+        microgear.chat(TargetWeb, data);
+        data="";
+      }*/
     }
+   
+    
   /*
     //output from node
      if(Serial.available()){
@@ -103,7 +109,7 @@ void setup()
   if(microgear.connected()) 
   {
     microgear.loop();
-    Serial.println("connect...");
+   // Serial.println("connect...");
   } 
   else 
   {
