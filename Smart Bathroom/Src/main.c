@@ -67,10 +67,10 @@ static void MX_ADC1_Init(void);
 
 /* USER CODE BEGIN 0 */
 void sendLiquidSensorValue() {
-	int value = HAL_ADC_GetState(&hadc1);
-	char value_buffer[128];
-	sprintf(value_buffer, "%d\n\r", value);
-	HAL_UART_Transmit(&huart2, value_buffer, strlen(value), 100);
+	int value = HAL_ADC_GetValue(&hadc1);
+	char value_buffer[6];
+	sprintf(value_buffer, "%d\n", value);
+	HAL_UART_Transmit(&huart2, value_buffer, strlen(value_buffer), 100);
 }
 
 /* USER CODE END 0 */
@@ -123,9 +123,9 @@ int main(void) {
 			}
 		}
 		//Send Liquid Sensor Value to UART
-//		HAL_Delay(1000);
-//		HAL_ADC_Start(&hadc1);
-//		sendLiquidSensorValue();
+		HAL_Delay(1000);
+		HAL_ADC_Start(&hadc1);
+		sendLiquidSensorValue();
 	}
 	/* USER CODE END 3 */
 
