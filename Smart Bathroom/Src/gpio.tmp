@@ -79,9 +79,9 @@ static void MX_GPIO_Init(void)
 #tGPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 #tGPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
 #tHAL_GPIO_Init(CLK_IN_GPIO_Port, &GPIO_InitStruct);
-#n#t/*Configure GPIO pin : PD11 */
-#tGPIO_InitStruct.Pin = GPIO_PIN_11;
-#tGPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+#n#t/*Configure GPIO pins : PD11 OTG_FS_OverCurrent_Pin */
+#tGPIO_InitStruct.Pin = GPIO_PIN_11|OTG_FS_OverCurrent_Pin;
+#tGPIO_InitStruct.Mode = GPIO_MODE_INPUT;
 #tGPIO_InitStruct.Pull = GPIO_NOPULL;
 #tHAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 #n#t/*Configure GPIO pins : LD4_Pin LD3_Pin LD5_Pin LD6_Pin #n#t#t#t#t#t#t#t#t#t#t#t#t#t Audio_RST_Pin */
@@ -109,11 +109,6 @@ static void MX_GPIO_Init(void)
 #tGPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 #tGPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
 #tHAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-#n#t/*Configure GPIO pin : OTG_FS_OverCurrent_Pin */
-#tGPIO_InitStruct.Pin = OTG_FS_OverCurrent_Pin;
-#tGPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-#tGPIO_InitStruct.Pull = GPIO_NOPULL;
-#tHAL_GPIO_Init(OTG_FS_OverCurrent_GPIO_Port, &GPIO_InitStruct);
 #n#t/*Configure GPIO pins : Audio_SCL_Pin Audio_SDA_Pin */
 #tGPIO_InitStruct.Pin = Audio_SCL_Pin|Audio_SDA_Pin;
 #tGPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
@@ -128,8 +123,6 @@ static void MX_GPIO_Init(void)
 #tHAL_GPIO_Init(MEMS_INT2_GPIO_Port, &GPIO_InitStruct);
 #n#t/* EXTI interrupt init*/
 #tHAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
-#tHAL_NVIC_EnableIRQ(EXTI4_IRQn);#n
-#tHAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
-#tHAL_NVIC_EnableIRQ(EXTI15_10_IRQn);#n#n
+#tHAL_NVIC_EnableIRQ(EXTI4_IRQn);#n#n
 }
 #n
