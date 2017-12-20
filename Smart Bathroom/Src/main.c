@@ -72,20 +72,13 @@ void sendLiquidSensorValue() {
 	sprintf(value_buffer, "%d\n\r", value);
 	HAL_UART_Transmit(&huart2, value_buffer, strlen(value), 100);
 }
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
-	char receive_buffer;
-	if (HAL_UART_Receive(&huart2, &receive_buffer, 1, 1000) == HAL_OK) {
-		//					HAL_GPIO_TogglePin();//Toggle Motor
-	}
-
-}
 /* USER CODE END 0 */
 
 int main(void) {
 
 	/* USER CODE BEGIN 1 */
-
+	char buff;
 	/* USER CODE END 1 */
 
 	/* MCU Configuration----------------------------------------------------------*/
@@ -119,10 +112,20 @@ int main(void) {
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
+		//Start or Stop Motor
+		if (HAL_UART_Receive(&huart2, &buff, 1, 1) == HAL_OK) {
+			//  HAL_Delay(100);
+			HAL_UART_Transmit(&huart2, &buff, 1, 1);
+			if (buff == 'f') {
+				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, 0);
+			} else if (buff == 'n') {
+				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, 1);
+			}
+		}
 		//Send Liquid Sensor Value to UART
-		HAL_Delay(1000);
-		HAL_ADC_Start(&hadc1);
-		sendLiquidSensorValue();
+//		HAL_Delay(1000);
+//		HAL_ADC_Start(&hadc1);
+//		sendLiquidSensorValue();
 	}
 	/* USER CODE END 3 */
 
@@ -282,8 +285,7 @@ static void MX_GPIO_Init(void) {
 
 	/*Configure GPIO pin Output Level */
 	HAL_GPIO_WritePin(GPIOD,
-			LD4_Pin | LD3_Pin | LD5_Pin | LD6_Pin | Audio_RST_Pin,
-			GPIO_PIN_RESET);
+	LD4_Pin | LD3_Pin | LD5_Pin | LD6_Pin | Audio_RST_Pin, GPIO_PIN_RESET);
 
 	/*Configure GPIO pin : CS_I2C_SPI_Pin */
 	GPIO_InitStruct.Pin = CS_I2C_SPI_Pin;
