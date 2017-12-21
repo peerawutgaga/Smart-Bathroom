@@ -1,4 +1,4 @@
 # Smart-Bathroom
 HW Syn Lab I Final Project
 
-#Project Folder -> Project1
+Project Folder -> Project1
